@@ -40,18 +40,21 @@ void Pigeon::init() {
   usleep(100*1000);
 
   // 9600 baud at init
-  set_baud(9600);
+  set_baud(115200);
 
   // power on pigeon
   set_power(1);
   usleep(500*1000);
 
   // baud rate upping
-  send("\x24\x50\x55\x42\x58\x2C\x34\x31\x2C\x31\x2C\x30\x30\x30\x37\x2C\x30\x30\x30\x33\x2C\x34\x36\x30\x38\x30\x30\x2C\x30\x2A\x31\x35\x0D\x0A"s);
+  // send("\x24\x50\x55\x42\x58\x2C\x34\x31\x2C\x31\x2C\x30\x30\x30\x37\x2C\x30\x30\x30\x33\x2C\x34\x36\x30\x38\x30\x30\x2C\x30\x2A\x31\x35\x0D\x0A"s);
+  send("\x24\x50\x55\x42\x58\x2C\x34\x31\x2C\x31\x2C\x30\x30\x30\x37\x2C\x30\x30\x30\x33\x2C\x32\x33\x30\x34\x30\x30\x2C\x30\x2A\x31\x35\x0D\x0A"s);
+
   usleep(100*1000);
 
   // set baud rate to 460800
-  set_baud(460800);
+  // As MXT906A does not support upto 460800, reduce to 230400
+  set_baud(230400);
   usleep(100*1000);
 
   // init from ubloxd
@@ -162,6 +165,12 @@ void TTYPigeon::set_baud(int baud){
     break;
   case 460800:
     baud_const = B460800;
+    break;
+  case 230400:
+    baud_const = B230400;
+    break;
+  case 115200:
+    baud_const = B115200;
     break;
   default:
     assert(false);
